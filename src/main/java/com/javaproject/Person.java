@@ -2,46 +2,29 @@ package com.javaproject;
 
 public class Person {
     private int id;
-    private String lastname;
-    private String firstname;
+    private String lastName;
+    private String firstName;
     private String email;
 
-    public Person(int id, String lastname, String firstname) {
+    public Person(int id, String lastName, String firstName) {
         this.id = id;
-        this.lastname = lastname;
-        this.firstname = firstname;
+        this.lastName = lastName;
+        this.firstName = firstName;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+//    public String getEmail() {
+//        return email;
+//    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getLastName() {
+        return lastName;
     }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public void setFirstname(String firstname) {
-//        this.firstname = firstname;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public void setLastname(String lastname) {
-//        this.lastname = lastname;
-//    }
 }
-

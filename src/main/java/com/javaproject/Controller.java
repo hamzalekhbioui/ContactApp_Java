@@ -17,8 +17,8 @@ public class Controller {
     @FXML
     private TableView<Person> personTable;
 
-    @FXML
-    private TableColumn<Person, Integer> idColumn;
+//    @FXML
+//    private TableColumn<Person, Integer> idColumn;
 
     @FXML
     private TableColumn<Person, String> firstNameColumn;
@@ -31,7 +31,7 @@ public class Controller {
 
 
     public void initialize() {
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
@@ -75,8 +75,11 @@ public class Controller {
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
 
+                System.out.println("Loaded person: ID=" + id + ", First Name=" + firstName + ", Last Name=" + lastName);
+
+
                 // Add the person to the list
-                personList.add(new Person(id, firstName, lastName));
+                personList.add(new Person(id, lastName,firstName ));
             }
 
             // Set the TableView items

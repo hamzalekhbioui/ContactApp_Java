@@ -5,7 +5,7 @@
             fx:controller="com.javaproject.Controller">
     <TableView fx:id="personTable" layoutX="50" layoutY="50" prefHeight="200" prefWidth="400">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+            <!--<TableColumn fx:id="idColumn" text="ID" prefWidth="100" />-->
             <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="150" />
             <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="150" />
         </columns>
