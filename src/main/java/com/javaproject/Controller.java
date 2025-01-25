@@ -28,24 +28,23 @@ public class Controller {
     @FXML
     private TableColumn<Person, String> lastNameColumn;
 
-    private ObservableList<Person> personList;
-
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
+        // Load data from the database
         loadPersonsFromDatabase();
 
-        personList = FXCollections.observableArrayList(
-                new Person(1, "hamza", "lekhbioui"),
-                new Person(2, "Jane", "Smith")
-        );
+//        personList = FXCollections.observableArrayList(
+//                new Person(1, "hamza", "lekhbioui"),
+//                new Person(2, "Jane", "Smith")
+//        );
 
     }
 
     private void loadPersonsFromDatabase() {
-        personList = FXCollections.observableArrayList();
+        ObservableList<Person> personList = FXCollections.observableArrayList();
         String query = "SELECT * FROM person";
 
         try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
