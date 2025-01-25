@@ -28,20 +28,20 @@ public class Person {
         return lastname;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public void setFirstname(String firstname) {
+//        this.firstname = firstname;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
+//
+//    public void setLastname(String lastname) {
+//        this.lastname = lastname;
+//    }
 }
 

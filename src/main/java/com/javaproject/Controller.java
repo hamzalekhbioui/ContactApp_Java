@@ -8,10 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 
 
 public class Controller {
@@ -28,6 +26,10 @@ public class Controller {
     @FXML
     private TableColumn<Person, String> lastNameColumn;
 
+    @FXML
+    private ObservableList<Person> personList;
+
+
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -43,29 +45,55 @@ public class Controller {
 
     }
 
+//    private void loadPersonsFromDatabase() {
+//        ObservableList<Person> personList = FXCollections.observableArrayList();
+//        String query = "SELECT * FROM person";
+//
+//        try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+//            while (rs.next()) {
+//                int id = rs.getInt("id");
+//                String firstName = rs.getString("firstName");
+//                String lastName = rs.getString("lastName");
+//                personList.add(new Person(id, firstName, lastName));
+//            }
+//            personTable.setItems(personList);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     private void loadPersonsFromDatabase() {
-        ObservableList<Person> personList = FXCollections.observableArrayList();
+        personList = FXCollections.observableArrayList();
         String query = "SELECT * FROM person";
 
-        try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Connection conn = DatabaseHelper.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
+
+                // Add the person to the list
                 personList.add(new Person(id, firstName, lastName));
             }
+
+            // Set the TableView items
             personTable.setItems(personList);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     public void addPerson() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Add Person");
         dialog.setHeaderText("Add a New Person");
-        dialog.setContentText("Enter first and last name (comma-separated):");
+        dialog.setContentText("Enter first name and last name (comma-separated):");
 
         dialog.showAndWait().ifPresent(input -> {
             String[] parts = input.split(",");
@@ -73,19 +101,25 @@ public class Controller {
                 String firstName = parts[0].trim();
                 String lastName = parts[1].trim();
 
-                // Insert into database
-                String insertSQL = "INSERT INTO person (firstName, lastName) VALUES ('" + firstName + "', '" + lastName + "')";
-                try (Connection conn = DatabaseHelper.connect(); Statement stmt = conn.createStatement()) {
-                    stmt.executeUpdate(insertSQL);
+                // Insert into the database
+                String insertSQL = "INSERT INTO person (firstName, lastName) VALUES (?, ?)";
+                try (Connection conn = DatabaseHelper.connect();
+                     PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
+                    pstmt.setString(1, firstName);
+                    pstmt.setString(2, lastName);
+                    pstmt.executeUpdate();
 
-                    // Reload data from the database
+                    // Reload the data from the database
                     loadPersonsFromDatabase();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            } else {
+                System.out.println("Invalid input format.");
             }
         });
     }
+
 
 
     @FXML

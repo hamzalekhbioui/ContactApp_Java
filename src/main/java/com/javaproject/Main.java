@@ -33,7 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Execute the SQLite script to initialize the database
-        DatabaseHelper.executeScript("script.sql");
+        //DatabaseHelper.executeScript("script.sql");
 
         // Load the JavaFX UI
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
