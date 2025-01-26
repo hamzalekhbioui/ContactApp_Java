@@ -1,0 +1,36 @@
+.text-field {
+    -fx-font-size: 14px;
+    -fx-border-color: lightgray;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-pref-width: 200px;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.buttons {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.button_delete {
+    -fx-background-color: #f2444d;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.button_delete:hover {
+    -fx-background-color: #f7020f;
+}
+
+.buttons:hover {
+    -fx-background-color: #45a049;
+}

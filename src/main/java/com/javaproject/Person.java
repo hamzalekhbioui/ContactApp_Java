@@ -49,8 +49,6 @@ public class Person {
         return birthDate;
     }
 
-
-
     public String getFirstName() {
         return firstName;
     }
