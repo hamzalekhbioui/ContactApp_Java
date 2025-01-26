@@ -3,13 +3,19 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.javaproject.Controller">
-    <TableView fx:id="personTable" layoutX="50" layoutY="50" prefHeight="200" prefWidth="400">
+    <TableView fx:id="personTable" layoutX="50" layoutY="50" prefHeight="200" prefWidth="1200">
         <columns>
             <!--<TableColumn fx:id="idColumn" text="ID" prefWidth="100" />-->
             <TableColumn fx:id="firstNameColumn" text="First Name" prefWidth="150" />
             <TableColumn fx:id="lastNameColumn" text="Last Name" prefWidth="150" />
+            <TableColumn fx:id="nicknameColumn" text="Nickname" prefWidth="150" />
+            <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="150" />
+            <TableColumn fx:id="addressColumn" text="Address" prefWidth="150" />
+            <TableColumn fx:id="emailAddressColumn" text="Email Address" prefWidth="150" />
+            <TableColumn fx:id="birthDateColumn" text="Birth Date" prefWidth="150" />
         </columns>
     </TableView>
     <Button text="Add" layoutX="50" layoutY="270" onAction="#addPerson"/>
     <Button text="Delete" layoutX="120" layoutY="270" onAction="#deletePerson"/>
 </AnchorPane>
+

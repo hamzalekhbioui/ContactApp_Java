@@ -26,6 +26,22 @@ public class Controller {
     @FXML
     private TableColumn<Person, String> lastNameColumn;
 
+
+    @FXML
+    private TableColumn<Person, String> nicknameColumn;
+
+    @FXML
+    private TableColumn<Person, String> addressColumn;
+
+    @FXML
+    private TableColumn<Person, String> phoneNumberColumn;
+
+    @FXML
+    private TableColumn<Person, String> emailAddressColumn;
+
+    @FXML
+    private TableColumn<Person, String> birthDateColumn;
+
     @FXML
     private ObservableList<Person> personList;
 
@@ -34,6 +50,12 @@ public class Controller {
         //idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        nicknameColumn.setCellValueFactory(new PropertyValueFactory<>("nickname"));
+        phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        emailAddressColumn.setCellValueFactory(new PropertyValueFactory<>("emailAddress"));
+        birthDateColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+
 
         // Load data from the database
         loadPersonsFromDatabase();
@@ -74,12 +96,17 @@ public class Controller {
                 int id = rs.getInt("id");
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
+                String nickname = rs.getString("nickname");
+                String phoneNumber = rs.getString("phone_number");
+                String address = rs.getString("address");
+                String emailAddress = rs.getString("emailAddress");
+                String birthDate = rs.getString("birthDate");
 
-                System.out.println("Loaded person: ID=" + id + ", First Name=" + firstName + ", Last Name=" + lastName);
+                System.out.println("Loaded person: ID=" + id + ", First Name=" + firstName + ", Last Name=" + lastName + ", Nickname=" + nickname + ", Phone Number=" + phoneNumber);
 
 
                 // Add the person to the list
-                personList.add(new Person(id, lastName,firstName ));
+                personList.add(new Person(id, lastName,firstName, nickname, phoneNumber, address, emailAddress, birthDate));
             }
 
             // Set the TableView items
@@ -100,16 +127,26 @@ public class Controller {
 
         dialog.showAndWait().ifPresent(input -> {
             String[] parts = input.split(",");
-            if (parts.length == 2) {
+            if (parts.length == 7) {
                 String firstName = parts[0].trim();
                 String lastName = parts[1].trim();
+                String nickname = parts[2].trim();
+                String phoneNumber = parts[3].trim();
+                String address = parts[4].trim();
+                String emailAddress = parts[5].trim();
+                String birthDate = parts[6].trim();
 
                 // Insert into the database
-                String insertSQL = "INSERT INTO person (firstName, lastName) VALUES (?, ?)";
+                String insertSQL = "INSERT INTO person (firstName, lastName, nickname, phoneNumber, address, emailAddress, birthDate) VALUES (?, ?, ?, ?, ?, ?, ?)";
                 try (Connection conn = DatabaseHelper.connect();
                      PreparedStatement pstmt = conn.prepareStatement(insertSQL)) {
                     pstmt.setString(1, firstName);
                     pstmt.setString(2, lastName);
+                    pstmt.setString(3, nickname);
+                    pstmt.setString(4, phoneNumber);
+                    pstmt.setString(5, address);
+                    pstmt.setString(6, emailAddress);
+                    pstmt.setString(7, birthDate);
                     pstmt.executeUpdate();
 
                     // Reload the data from the database
