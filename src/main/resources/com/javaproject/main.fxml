@@ -4,7 +4,6 @@
 
 <VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.javaproject.Controller">
     <children>
-        <!-- TableView Section -->
         <TableView fx:id="personTable" VBox.vgrow="ALWAYS" prefHeight="400.0" prefWidth="800.0">
             <columns>
                 <TableColumn fx:id="firstNameColumn" text="First Name" />
@@ -43,6 +42,7 @@
         <HBox spacing="10" alignment="CENTER">
             <Button text="Save" onAction="#addPerson" styleClass="buttons" />
             <Button text="Delete" onAction="#deletePerson" styleClass="button_delete" />
+            <Button text="Modify" onAction="#modifyPerson" styleClass="buttons" />
             <Button text="Clear All" onAction="#clearFormFields" styleClass="buttons" />
         </HBox>
     </children>

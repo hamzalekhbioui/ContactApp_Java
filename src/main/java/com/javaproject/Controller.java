@@ -1,12 +1,20 @@
 package com.javaproject;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import java.sql.*;
 
 public class Controller {
 
@@ -18,12 +26,10 @@ public class Controller {
     @FXML
     private TextField firstNameField, lastNameField, nicknameField, phoneNumberField, addressField, emailAddressField, birthDateField;
 
+
     private ObservableList<Person> personList;
 
     public void initialize() {
-
-
-
         firstNameField.setPromptText("Enter First Name");
         lastNameField.setPromptText("Enter Last Name");
         nicknameField.setPromptText("Enter Nickname");
@@ -40,6 +46,12 @@ public class Controller {
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         emailAddressColumn.setCellValueFactory(new PropertyValueFactory<>("emailAddress"));
         birthDateColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+
+        personTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                fillFormFields();
+            }
+        });
 
         loadPersonsFromDatabase();
     }
@@ -65,6 +77,7 @@ public class Controller {
                 ));
             }
             personTable.setItems(personList);
+            autoResizeColumns();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,6 +109,7 @@ public class Controller {
 
                 loadPersonsFromDatabase();
                 clearFormFields();
+                autoResizeColumns();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -157,6 +171,73 @@ public class Controller {
         }
     }
 
+    @FXML
+    private void fillFormFields() {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            firstNameField.setText(selectedPerson.getFirstName());
+            lastNameField.setText(selectedPerson.getLastName());
+            nicknameField.setText(selectedPerson.getNickname());
+            phoneNumberField.setText(selectedPerson.getPhoneNumber());
+            addressField.setText(selectedPerson.getAddress());
+            emailAddressField.setText(selectedPerson.getEmailAddress());
+            birthDateField.setText(selectedPerson.getBirthDate());
+        }
+    }
 
+    @FXML
+    private void modifyPerson() {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        if (selectedPerson == null) {
+            showAlert("No Selection", "Please select a person to modify.");
+            return;
+        }
+
+        // Validate input before saving changes
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String nickname = nicknameField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String address = addressField.getText();
+        String emailAddress = emailAddressField.getText();
+        String birthDate = birthDateField.getText();
+
+        if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
+            return;
+        }
+
+        String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseHelper.connect();
+            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, nickname);
+            pstmt.setString(4, phoneNumber);
+            pstmt.setString(5, address);
+            pstmt.setString(6, emailAddress);
+            pstmt.setString(7, birthDate);
+            pstmt.setInt(8, selectedPerson.getId());
+            pstmt.executeUpdate();
+
+            // Reload data
+            loadPersonsFromDatabase();
+            // Clear form fields
+            clearFormFields();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private void autoResizeColumns() {
+    personTable.getColumns().forEach(column -> {
+        column.setResizable(false); 
+        column.setPrefWidth(150);  
+        column.setResizable(true); 
+    });
 }
 
+
+}
