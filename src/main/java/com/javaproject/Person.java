@@ -1,59 +1,85 @@
 package com.javaproject;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class Person {
-    private int id;
-    private String lastName;
-    private String firstName;
-    private String nickname;
-    private String phoneNumber;
-    private String address;
-    private String emailAddress;
-    private String birthDate;
+    private final int id;
+    private final SimpleStringProperty firstName;
+    private final SimpleStringProperty lastName;
+    private final SimpleStringProperty nickname;
+    private final SimpleStringProperty phoneNumber;
+    private final SimpleStringProperty address;
+    private final SimpleStringProperty emailAddress;
+    private final SimpleStringProperty birthDate;
 
-    public Person(int id, String lastName, String firstName,String nickname,
-                  String phoneNumber, String address, String emailAddress, String birthDate) {
-
+    public Person(int id, String firstName, String lastName, String nickname, String phoneNumber, String address, String emailAddress, String birthDate) {
         this.id = id;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.nickname = nickname;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.emailAddress = emailAddress;
-        this.birthDate = birthDate;
+        this.firstName = new SimpleStringProperty(firstName);
+        this.lastName = new SimpleStringProperty(lastName);
+        this.nickname = new SimpleStringProperty(nickname);
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.address = new SimpleStringProperty(address);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.birthDate = new SimpleStringProperty(birthDate);
     }
 
     public int getId() {
         return id;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber;}
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
     public String getFirstName() {
-        return firstName;
+        return firstName.get();
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
     }
 
     public String getLastName() {
-        return lastName;
+        return lastName.get();
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+
+    public String getNickname() {
+        return nickname.get();
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname.set(nickname);
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber.get();
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber.set(phoneNumber);
+    }
+
+    public String getAddress() {
+        return address.get();
+    }
+
+    public void setAddress(String address) {
+        this.address.set(address);
+    }
+
+    public String getEmailAddress() {
+        return emailAddress.get();
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress.set(emailAddress);
+    }
+
+    public String getBirthDate() {
+        return birthDate.get();
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate.set(birthDate);
     }
 }

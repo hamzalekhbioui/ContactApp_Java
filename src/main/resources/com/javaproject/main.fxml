@@ -2,9 +2,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="com.javaproject.Controller">
+<VBox spacing="15" xmlns:fx="http://javafx.com/fxml" fx:controller="com.javaproject.Controller">
+    <!-- Header Section -->
     <children>
-        <TableView fx:id="personTable" VBox.vgrow="ALWAYS" prefHeight="400.0" prefWidth="800.0">
+        <Label text="Manage Contacts" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-alignment: center;" alignment="CENTER" />
+
+        <!-- Table Section -->
+        <TableView fx:id="personTable" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="firstNameColumn" text="First Name" />
                 <TableColumn fx:id="lastNameColumn" text="Last Name" />
@@ -16,34 +20,44 @@
             </columns>
         </TableView>
 
-
         <!-- Form Section -->
         <GridPane hgap="10" vgap="10" alignment="CENTER">
-            <!-- Labels -->
-            <Label text="First Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-            <Label text="Last Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-            <Label text="Nickname:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-            <Label text="Phone Number:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
-            <Label text="Address:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-            <Label text="Email Address:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
-            <Label text="Birth Date (YYYY-MM-DD):" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="100" />
+                <ColumnConstraints halignment="LEFT" minWidth="200" />
+            </columnConstraints>
 
-            <!-- Text Fields -->
-            <TextField fx:id="firstNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" promptText="Enter First Name" />
-            <TextField fx:id="lastNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" promptText="Enter Last Name" />
-            <TextField fx:id="nicknameField" GridPane.rowIndex="2" GridPane.columnIndex="1" promptText="Enter Nickname" />
-            <TextField fx:id="phoneNumberField" GridPane.rowIndex="3" GridPane.columnIndex="1" promptText="Enter Phone Number" />
-            <TextField fx:id="addressField" GridPane.rowIndex="4" GridPane.columnIndex="1" promptText="Enter Address" />
-            <TextField fx:id="emailAddressField" GridPane.rowIndex="5" GridPane.columnIndex="1" promptText="Enter Email Address" />
-            <TextField fx:id="birthDateField" GridPane.rowIndex="6" GridPane.columnIndex="1" promptText="YYYY-MM-DD" />
+            <children>
+                <Label text="First Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <TextField fx:id="firstNameField" promptText="Enter First Name" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                <Label text="Last Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <TextField fx:id="lastNameField" promptText="Enter Last Name" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <Label text="Nickname:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <TextField fx:id="nicknameField" promptText="Enter Nickname" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <Label text="Phone Number:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <TextField fx:id="phoneNumberField" promptText="Enter Phone Number" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                <Label text="Address:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <TextField fx:id="addressField" promptText="Enter Address" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                <Label text="Email Address:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                <TextField fx:id="emailAddressField" promptText="Enter Email Address" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+                <Label text="Birth Date (YYYY-MM-DD):" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                <TextField fx:id="birthDateField" promptText="YYYY-MM-DD" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+            </children>
         </GridPane>
 
         <!-- Buttons Section -->
         <HBox spacing="10" alignment="CENTER">
-            <Button text="Save" onAction="#addPerson" styleClass="buttons" />
-            <Button text="Delete" onAction="#deletePerson" styleClass="button_delete" />
-            <Button text="Modify" onAction="#modifyPerson" styleClass="buttons" />
-            <Button text="Clear All" onAction="#clearFormFields" styleClass="buttons" />
+            <Button text="Save" onAction="#addPerson" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+            <Button text="Modify" onAction="#modifyPerson" style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
+            <Button text="Delete" onAction="#deletePerson" style="-fx-background-color: #f44336; -fx-text-fill: white;" />
+            <Button text="Clear All" onAction="#clearFormFields" />
         </HBox>
     </children>
 </VBox>
+

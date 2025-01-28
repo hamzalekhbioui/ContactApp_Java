@@ -65,16 +65,15 @@ public class Controller {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                personList.add(new Person(
-                        rs.getInt("id"),
-                        rs.getString("firstName"),
-                        rs.getString("lastName"),
-                        rs.getString("nickname"),
-                        rs.getString("phoneNumber"),
-                        rs.getString("address"),
-                        rs.getString("emailAddress"),
-                        rs.getString("birthDate")
-                ));
+                int id = rs.getInt("id");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String nickname = rs.getString("nickname");
+                String phoneNumber = rs.getString("phoneNumber");
+                String address = rs.getString("address");
+                String emailAddress = rs.getString("emailAddress");
+                String birthDate = rs.getString("birthDate");
+                personList.add(new Person(id, firstName, lastName, nickname, phoneNumber, address, emailAddress, birthDate));
             }
             personTable.setItems(personList);
             autoResizeColumns();
@@ -186,48 +185,57 @@ public class Controller {
     }
 
     @FXML
-    private void modifyPerson() {
-        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-        if (selectedPerson == null) {
-            showAlert("No Selection", "Please select a person to modify.");
-            return;
-        }
-
-        // Validate input before saving changes
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
-        String nickname = nicknameField.getText();
-        String phoneNumber = phoneNumberField.getText();
-        String address = addressField.getText();
-        String emailAddress = emailAddressField.getText();
-        String birthDate = birthDateField.getText();
-
-        if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
-            return;
-        }
-
-        String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
-        try (Connection conn = DatabaseHelper.connect();
-            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, nickname);
-            pstmt.setString(4, phoneNumber);
-            pstmt.setString(5, address);
-            pstmt.setString(6, emailAddress);
-            pstmt.setString(7, birthDate);
-            pstmt.setInt(8, selectedPerson.getId());
-            pstmt.executeUpdate();
-
-            // Reload data
-            loadPersonsFromDatabase();
-            // Clear form fields
-            clearFormFields();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+private void modifyPerson() {
+    Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+    if (selectedPerson == null) {
+        showAlert("No Selection", "Please select a person to modify.");
+        return;
     }
+
+    // Get values from input fields
+    String firstName = firstNameField.getText();
+    String lastName = lastNameField.getText();
+    String nickname = nicknameField.getText();
+    String phoneNumber = phoneNumberField.getText();
+    String address = addressField.getText();
+    String emailAddress = emailAddressField.getText();
+    String birthDate = birthDateField.getText();
+
+    // Validate input before updating
+    if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
+        return;
+    }
+
+    // Correct SQL update query
+    String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
+    try (Connection conn = DatabaseHelper.connect();
+         PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+        // Bind parameters in the correct order
+        pstmt.setString(1, firstName);   // Update firstName
+        pstmt.setString(2, lastName);   // Update lastName
+        pstmt.setString(3, nickname);   // Update nickname
+        pstmt.setString(4, phoneNumber); // Update phoneNumber
+        pstmt.setString(5, address);     // Update address
+        pstmt.setString(6, emailAddress); // Update emailAddress
+        pstmt.setString(7, birthDate);    // Update birthDate
+        pstmt.setInt(8, selectedPerson.getId()); // WHERE condition with ID
+
+        pstmt.executeUpdate();
+
+        // Reload the updated data in the TableView
+        loadPersonsFromDatabase();
+
+        // Explicitly refresh the TableView
+        personTable.refresh();
+
+        // Clear form fields after modification
+        clearFormFields();
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
 
 
 
