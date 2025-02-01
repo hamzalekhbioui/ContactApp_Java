@@ -8,10 +8,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/javaproject/main.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-
-        scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
 
         primaryStage.setTitle("Contact App");
         primaryStage.setScene(scene);

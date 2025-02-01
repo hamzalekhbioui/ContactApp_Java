@@ -24,8 +24,7 @@ public class Controller {
     private TableColumn<Person, String> firstNameColumn, lastNameColumn, nicknameColumn, phoneNumberColumn, addressColumn, emailAddressColumn, birthDateColumn;
 
     @FXML
-    private TextField firstNameField, lastNameField, nicknameField, phoneNumberField, addressField, emailAddressField, birthDateField;
-
+    private TextField firstNameField, lastNameField, nicknameField, phoneNumberField, addressField, emailAddressField, birthDateField, searchField;
 
     private ObservableList<Person> personList;
 
@@ -55,6 +54,27 @@ public class Controller {
 
         loadPersonsFromDatabase();
     }
+
+    @FXML
+    public void searchPerson() {
+        String query = searchField.getText().toLowerCase();
+        if (query.isEmpty()) {
+            // If the search field is empty, reload all persons from the database
+            loadPersonsFromDatabase();
+            return;
+        }
+        ObservableList<Person> filteredList = FXCollections.observableArrayList();
+        for (Person person : personList) {
+            if (person.getFirstName().toLowerCase().contains(query) ||
+                person.getLastName().toLowerCase().contains(query) ||
+                person.getNickname().toLowerCase().contains(query) ||
+                person.getPhoneNumber().contains(query)) {
+                filteredList.add(person);
+            }
+        }
+        personTable.setItems(filteredList);
+    }
+
 
     private void loadPersonsFromDatabase() {
         personList = FXCollections.observableArrayList();
@@ -192,7 +212,6 @@ private void modifyPerson() {
         return;
     }
 
-    // Get values from input fields
     String firstName = firstNameField.getText();
     String lastName = lastNameField.getText();
     String nickname = nicknameField.getText();
@@ -201,16 +220,13 @@ private void modifyPerson() {
     String emailAddress = emailAddressField.getText();
     String birthDate = birthDateField.getText();
 
-    // Validate input before updating
     if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
         return;
     }
 
-    // Correct SQL update query
     String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
     try (Connection conn = DatabaseHelper.connect();
          PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
-        // Bind parameters in the correct order
         pstmt.setString(1, firstName);   // Update firstName
         pstmt.setString(2, lastName);   // Update lastName
         pstmt.setString(3, nickname);   // Update nickname
@@ -222,13 +238,10 @@ private void modifyPerson() {
 
         pstmt.executeUpdate();
 
-        // Reload the updated data in the TableView
         loadPersonsFromDatabase();
 
-        // Explicitly refresh the TableView
         personTable.refresh();
 
-        // Clear form fields after modification
         clearFormFields();
 
     } catch (SQLException e) {
