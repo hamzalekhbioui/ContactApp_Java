@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -131,29 +134,74 @@ public class Controller {
                 autoResizeColumns();
             } catch (SQLException e) {
                 e.printStackTrace();
-            }
+            }  
         }
     }
 
     private boolean validateInput(String firstName, String lastName, String nickname, String phoneNumber, String emailAddress, String birthDate) {
-        if (firstName.isEmpty() || lastName.isEmpty() || nickname.isEmpty()) {
+        resetFieldStyles(); // Reset all fields before validation
+    
+        boolean valid = true;
+    
+        if (firstName.isEmpty() || lastName.isEmpty() || nickname.isEmpty() || firstName.matches(".*[0-9].*") || lastName.matches(".*[0-9].*") || nickname.matches(".*[0-9].*")) {
             showAlert("Validation Error", "All fields must be filled!");
-            return false;
+            valid = false;
         }
-        if (!phoneNumber.matches("\\d+")) {
-            showAlert("Validation Error", "Phone Number must contain only digits!");
-            return false;
+    
+        // Phone number validation: Must start with 06 or 07 and have exactly 10 digits
+        if (!phoneNumber.matches("^(06|07)\\d{8}$")) {
+            showAlert("Validation Error", "Phone Number must start with 06 or 07 and contain exactly 10 digits!");
+            phoneNumberField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            valid = false;
         }
+    
+        // Email format validation
         if (!emailAddress.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
             showAlert("Validation Error", "Invalid Email Address format!");
-            return false;
+            emailAddressField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            valid = false;
         }
-        if (!birthDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
+    
+        // Birth Date validation: Check if it follows YYYY-MM-DD and is not in the future
+        if (!isValidBirthDate(birthDate)) {
             showAlert("Validation Error", "Birth Date must follow the format YYYY-MM-DD!");
-            return false;
+            birthDateField.setStyle("-fx-border-color: red; -fx-border-width: 2px;");
+            valid = false;
         }
-        return true;
+    
+        return valid;
     }
+    private boolean isValidBirthDate(String birthDate) {
+        try {
+            // Define the expected date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    
+            // Parse the input date
+            LocalDate date = LocalDate.parse(birthDate, formatter);
+    
+            // Get the current date
+            LocalDate currentDate = LocalDate.now();
+    
+            // Validate if birthdate is in the future
+            if (date.isAfter(currentDate)) {
+                return false; // Birthdate cannot be in the future
+            }
+    
+            return true; // Valid birthdate
+        } catch (DateTimeParseException e) {
+            return false; // Invalid format
+        }
+    }
+    
+    
+    // Reset styles before validation
+    private void resetFieldStyles() {
+        phoneNumberField.setStyle(""); 
+        emailAddressField.setStyle("");
+        birthDateField.setStyle("");
+    }
+    
+    
 
     @FXML
     private void clearFormFields() {
@@ -205,49 +253,49 @@ public class Controller {
     }
 
     @FXML
-private void modifyPerson() {
-    Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
-    if (selectedPerson == null) {
-        showAlert("No Selection", "Please select a person to modify.");
-        return;
+    private void modifyPerson() {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        if (selectedPerson == null) {
+            showAlert("No Selection", "Please select a person to modify.");
+            return;
+        }
+
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String nickname = nicknameField.getText();
+        String phoneNumber = phoneNumberField.getText();
+        String address = addressField.getText();
+        String emailAddress = emailAddressField.getText();
+        String birthDate = birthDateField.getText();
+
+        if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
+            return;
+        }
+
+        String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
+        try (Connection conn = DatabaseHelper.connect();
+            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+            pstmt.setString(1, firstName);   // Update firstName
+            pstmt.setString(2, lastName);   // Update lastName
+            pstmt.setString(3, nickname);   // Update nickname
+            pstmt.setString(4, phoneNumber); // Update phoneNumber
+            pstmt.setString(5, address);     // Update address
+            pstmt.setString(6, emailAddress); // Update emailAddress
+            pstmt.setString(7, birthDate);    // Update birthDate
+            pstmt.setInt(8, selectedPerson.getId()); // WHERE condition with ID
+
+            pstmt.executeUpdate();
+
+            loadPersonsFromDatabase();
+
+            personTable.refresh();
+
+            clearFormFields();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    String firstName = firstNameField.getText();
-    String lastName = lastNameField.getText();
-    String nickname = nicknameField.getText();
-    String phoneNumber = phoneNumberField.getText();
-    String address = addressField.getText();
-    String emailAddress = emailAddressField.getText();
-    String birthDate = birthDateField.getText();
-
-    if (!validateInput(firstName, lastName, nickname, phoneNumber, emailAddress, birthDate)) {
-        return;
-    }
-
-    String updateSQL = "UPDATE person SET firstName = ?, lastName = ?, nickname = ?, phoneNumber = ?, address = ?, emailAddress = ?, birthDate = ? WHERE id = ?";
-    try (Connection conn = DatabaseHelper.connect();
-         PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
-        pstmt.setString(1, firstName);   // Update firstName
-        pstmt.setString(2, lastName);   // Update lastName
-        pstmt.setString(3, nickname);   // Update nickname
-        pstmt.setString(4, phoneNumber); // Update phoneNumber
-        pstmt.setString(5, address);     // Update address
-        pstmt.setString(6, emailAddress); // Update emailAddress
-        pstmt.setString(7, birthDate);    // Update birthDate
-        pstmt.setInt(8, selectedPerson.getId()); // WHERE condition with ID
-
-        pstmt.executeUpdate();
-
-        loadPersonsFromDatabase();
-
-        personTable.refresh();
-
-        clearFormFields();
-
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-}
 
 
 
