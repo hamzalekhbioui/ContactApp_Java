@@ -1,4 +1,11 @@
 # Contact App - JavaFX & SQLite
+## Contributors 👨‍💻👩‍💻
+
+This project was developed by:
+
+- **Hamza Lekhbioui** - [GitHub Profile](https://github.com/yourgithub)
+- **[Teammate Name]** - [GitHub Profile](https://github.com/theirgithub)
+- **[Teammate Name]** - [GitHub Profile](https://github.com/theirgithub)
 
 ## 📌 Introduction
 This is a **JavaFX-based Contact Management Application** that allows users to:
