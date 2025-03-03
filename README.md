@@ -5,7 +5,7 @@ This is a **JavaFX-based Contact Management Application** that allows users to:
 ✅ **Add, Modify, Delete, and Search** contacts
 ✅ Categorize contacts into **Friends, Family, Work, and All Contacts**
 ✅ **Store contacts** in an SQLite database
-✅ **Use a modern UI** with a sidebar menu & form-based input
+✅ **Use a modern UI** with a form-based input
 ✅ **Ensure data validation** for phone numbers and birthdates
 
 ---
@@ -45,8 +45,7 @@ mvn exec:java
 - ✅ **Contact Categories:** All Contacts, Friends, Family, Work
 - ✅ **UI Improvements** with sidebar navigation
 - ✅ **Database Storage** using SQLite
-- ✅ **Data Validation:** Phone numbers must start with `06` or `07`, birthdates cannot be in the future
-- ✅ **Unit Testing** (for database operations)
+- ✅ **Unit Testing** 
 
 ---
 
@@ -68,20 +67,6 @@ contact-app/
 │-- pom.xml  # Maven Configuration
 ```
 
----
-
-## 📌 Improvements & Future Work
-🔹 **Add more unit tests** for update and delete operations
-🔹 **Enhance UI design** to be even more modern
-🔹 **Improve error handling** for database operations
-🔹 **Use Java Streams** for efficient data filtering
-
----
-
-## 📞 Contact
-For any questions, reach out at **your.email@example.com** 📩
-
----
 
 ### **🚀 Happy Coding! 💻🔥**
 
