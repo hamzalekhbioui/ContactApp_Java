@@ -3,10 +3,10 @@
 
 This project was developed by:
 
-- **LEKHBIOUI Hamza** - [GitHub Profile](https://github.com/hamzalekhbioui)
-- **MOUSSAIF Mohammed Amine** - [GitHub Profile](https://github.com/theirgithub)
-- **BERNOUSSI Wahb** - [GitHub Profile](https://github.com/theirgithub)
-- **EL HASSNAOUI Akram** - [GitHub Profile](https://github.com/theirgithub)
+- **LEKHBIOUI Hamza** 
+- **MOUSSAIF Mohammed Amine** 
+- **BERNOUSSI Wahb** 
+- **EL HASSNAOUI Akram** 
 
 ## 📌 Introduction
 This is a **JavaFX-based Contact Management Application** that allows users to:
