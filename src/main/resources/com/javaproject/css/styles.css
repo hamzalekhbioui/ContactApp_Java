@@ -1,0 +1,37 @@
+.text-field {
+    -fx-font-size: 14px;
+    -fx-border-color: lightgray;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;   
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.modifyButton {
+    -fx-background-color: #2196F3;
+}   
+
+.deleteButton {
+    -fx-background-color: #f44336;
+
+
+}
+
+.button:hover {
+    -fx-background-color: #45a049;
+}
+
+.deleteButton:hover {
+    -fx-background-color: #e53935;
+}   
+
+.modifyButton:hover {
+    -fx-background-color: #0b7dda;
+}
+
