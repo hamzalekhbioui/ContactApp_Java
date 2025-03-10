@@ -75,7 +75,7 @@ contact-app/
 │-- pom.xml  # Maven Configuration
 ```
 # Methods Overview
-```
+
 ## **Controller.java**
 This class handles user interactions and manages data flow in the application.
 
@@ -142,7 +142,7 @@ Contains test cases for database-related functions.
 - `testUpdatePerson()`: Tests updating a person in the database.
 - `testExecuteInvalidSQL()`: Tests handling of invalid SQL queries.
 - `testEnsureTableSchema()`: Tests whether the required database schema is properly set up.
-```
+
 
 
 
